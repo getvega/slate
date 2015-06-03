@@ -43,7 +43,7 @@
 <li>Ask your API credentials at api@cubyn.com, describing your needs</li>
 <li>Authenticate yourself via <a href="#authentication">HTTP Basic</a></li>
 <li>Manage your <a href="#manage-your-users">users</a></li>
-<li>Issues your <a href="#manage-your-orders">orders</a></li>
+<li>Create your <a href="#manage-your-orders">orders</a></li>
 </ul>
 
 <h2 id="basically">Basically</h2>
@@ -84,7 +84,7 @@
 </tr>
 <tr>
 <td><code class="prettyprint">COMPLETE</code></td>
-<td>All shipments has arrived at destination</td>
+<td>All shipments have arrived to destination</td>
 </tr>
 </tbody></table>
 
@@ -322,6 +322,11 @@ Content-Type: application/json
 <td>POST</td>
 <td><code class="prettyprint">/users/:id/orders</code></td>
 <td>Create a new order on behalf of that user</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code class="prettyprint">/orders/:id/pick</code></td>
+<td>Complete the editing phase - Cubyn will process the order!</td>
 </tr>
 </tbody></table>
 
