@@ -23,28 +23,31 @@ under the License.
 
 // BACKGROUND COLORS
 ////////////////////
-$nav-bg: #393939;
+$nav-bg: #F3F3F3;
 $examples-bg: #393939;
 $code-bg: #292929;
 $code-annotation-bg: #1c1c1c;
-$nav-subitem-bg: #262626;
-$nav-active-bg: #2467af;
+$nav-subitem-bg: #F3F3F3;
+$nav-active-bg: transparent;
 $lang-select-border: #000;
 $lang-select-bg: #222;
 $lang-select-active-bg: $examples-bg; // feel free to change this to blue or something
 $lang-select-pressed-bg: #111; // color of language tab bg when mouse is pressed
-$main-bg: #eaf2f6;
-$aside-notice-bg: #8fbcd4;
-$aside-warning-bg: #c97a7e;
-$aside-success-bg: #6ac174;
+$main-bg: #FFFFFF;
+$aside-notice-bg: #FBFCE2;
+$aside-warning-bg: #FCE2E2;
+$aside-success-bg: #E6FCE2;
 $search-notice-bg: #c97a7e;
 
+$light-border: rgba(0,0,0,.1);
 
 // TEXT COLORS
 ////////////////////
 $main-text: #333; // main content text color
-$nav-text: #fff;
-$nav-active-text: #fff;
+$primary-color: #6BA730;
+$main-text-dimmed: #777; // main content text color
+$nav-text: $main-text-dimmed;
+$nav-active-text: $primary-color;
 $lang-select-text: #fff; // color of unselected language tab text
 $lang-select-active-text: #fff; // color of selected language tab text
 $lang-select-pressed-text: #fff; // color of language tab text when mouse is pressed
@@ -68,13 +71,13 @@ $phone-width: $tablet-width - $nav-width; // min width before reverting to mobil
 // FONTS
 ////////////////////
 %default-font {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 300;
 }
 
 %header-font {
   @extend %default-font;
-  font-weight: bold;
 }
 
 %code-font {

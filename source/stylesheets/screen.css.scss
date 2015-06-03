@@ -37,6 +37,12 @@ html, body {
   -webkit-text-size-adjust: none; /* Never autoresize text */
 }
 
+a,
+a:hover {
+    color: $primary-color;
+    text-decoration: none;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 ////////////////////////////////////////////////////////////////////////////////
@@ -77,8 +83,8 @@ html, body {
   bottom: 0;
   width: $nav-width;
   background-color: $nav-bg;
-  font-size: 13px;
-  font-weight: bold;
+  font-size: 15px;
+  font-weight: 300;
 
   // language selector for mobile devices
   .lang-selector {
@@ -100,20 +106,22 @@ html, body {
     input {
       background: $nav-bg;
       border-width: 0 0 1px 0;
-      border-color: $search-box-border-color;
-      padding: 6px 0 6px 20px;
+      border-color: transparent;
+      padding: 6px 6px 6px 30px;
       @include box-sizing(border-box);
       margin: $nav-v-padding $nav-padding;
       width: $nav-width - 30;
       outline: none;
       color: $nav-text;
       border-radius: 0; /* ios has a default border radius */
+      background: white;
+      border-radius: 2px;
     }
 
     &:before {
       position: absolute;
-      top: 17px;
-      left: $nav-padding;
+      top: 20px;
+      left: 24px;
       color: $nav-text;
       @extend %icon-search;
     }
@@ -136,8 +144,6 @@ html, body {
       height: 30%;
       margin-bottom: 1em;
     }
-
-    @include embossed-bg;
 
     li {
       margin: 1em $nav-padding;
@@ -178,13 +184,25 @@ html, body {
     @include transition-property('background');
     @include transition-timing-function('linear');
     @include transition-duration(230ms);
+
+    a {
+      color: $main-text-dimmed;
+      &:hover {
+        color: $main-text;
+      }
+    }
   }
 
   // This is the currently selected ToC entry
   .tocify-focus {
-    @include box-shadow(0px 1px 0px $nav-active-shadow);
     background-color: $nav-active-bg;
     color: $nav-active-text;
+    a {
+      color: $primary-color;
+      &:hover {
+        color: $primary-color;
+      }
+    }
   }
 
   // Subheaders are the submenus that slide open
@@ -197,15 +215,10 @@ html, body {
       padding-left: $nav-padding + $nav-indent;
       font-size: 12px;
     }
-
-    // for embossed look:
-    @include embossed-bg;
-    &>li:last-child {
-      box-shadow: none; // otherwise it'll overflow out of the subheader
-    }
   }
 
   .toc-footer {
+    display: none;
     padding: 1em 0;
     margin-top: 1em;
     border-top: 1px dashed $nav-footer-border-color;
@@ -343,12 +356,17 @@ html, body {
     clear: both;
   }
 
+  em {
+    font-style: normal;
+    font-weight: 400;
+    border-bottom: 1px dashed #CCC;
+  }
+
   &>h1, &>h2, &>h3, &>h4, &>h5, &>h6, &>p, &>table, &>ul, &>ol, &>aside, &>dl {
     margin-right: $examples-width;
     padding: 0 $main-padding;
     @include box-sizing(border-box);
     display: block;
-    @include text-shadow($main-embossed-text-shadow);
 
     @extend %left-col;
   }
@@ -370,10 +388,9 @@ html, body {
     border-bottom: 1px solid #ccc;
     margin-bottom: $h1-margin-bottom;
     margin-top: 2em;
-    border-top: 1px solid #ddd;
-    @include background-image(
-      linear-gradient(top, #fff, #f9f9f9)
-    );
+    border-bottom: 1px solid $light-border;
+    margin-right: 0;
+    text-transform: uppercase;
   }
 
   h1:first-child, div:first-child + h1 {
@@ -384,9 +401,8 @@ html, body {
   h2 {
     @extend %header-font;
     font-size: 20px;
-    margin-top: 4em;
+    margin-top: 1em;
     margin-bottom: 0;
-    border-top: 1px solid #ccc;
     padding-top: 1.2em;
     padding-bottom: 1.2em;
     @include background-image(
@@ -422,6 +438,9 @@ html, body {
   table {
     margin-bottom: 1em;
     overflow: auto;
+    background: #F3F3F3;
+    border-left: 3px solid #FFF;
+    border-right: 3px solid #FFF;
     th,td {
       text-align: left;
       vertical-align: top;
@@ -429,25 +448,28 @@ html, body {
     }
 
     th {
-      padding: 5px 10px;
-      border-bottom: 1px solid #ccc;
-      vertical-align: bottom;
+      padding: 10px 20px;
+      padding-left: 0;
+      vertical-align: middle;
+      color: $main-text-dimmed;
+      font-weight: 300;
+      text-transform: uppercase;
+      background: transparent;
+      white-space: nowrap;
     }
 
     td {
-      padding: 10px;
-    }
+      padding: 10px 20px;
+      padding-left: 0;
+      background: transparent;
 
-    tr:last-child {
-      border-bottom: 1px solid #ccc;
+      > code {
+        white-space: nowrap;
+      }
     }
-
-    tr:nth-child(odd)>td {
-      background-color: lighten($main-bg,4.2%);
-    }
-
-    tr:nth-child(even)>td {
-      background-color: lighten($main-bg,2.4%);
+    
+    td:first-child {
+        font-weight: 400;
     }
   }
 
@@ -484,20 +506,19 @@ html, body {
   aside {
     padding-top: 1em;
     padding-bottom: 1em;
-    @include text-shadow(0 1px 0 lighten($aside-notice-bg, 15%));
     margin-top: 1.5em;
     margin-bottom: 1.5em;
     background: $aside-notice-bg;
     line-height: 1.6;
+    border-left: 3px solid white;
+    border-right: 3px solid white;
 
     &.warning {
       background-color: $aside-warning-bg;
-      @include text-shadow(0 1px 0 lighten($aside-warning-bg, 15%));
     }
 
     &.success {
       background-color: $aside-success-bg;
-      @include text-shadow(0 1px 0 lighten($aside-success-bg, 15%));
     }
   }
 
@@ -524,7 +545,6 @@ html, body {
     margin: -2px;
     border-radius: 4px;
     border: 1px solid #F7E633;
-    @include text-shadow(1px 1px 0 #666);
     @include background(linear-gradient(bottom right, #F7E633 0%, #F1D32F 100%));
   }
 }
@@ -547,7 +567,6 @@ html, body {
     clear:right;
 
     @include box-sizing(border-box);
-    @include text-shadow(0px 1px 2px rgba(0,0,0,0.4));
 
     @extend %right-col;
 
@@ -567,11 +586,9 @@ html, body {
   blockquote {
     &>p {
       background-color: $code-annotation-bg;
-      border-radius: 5px;
+      border-radius: 2px;
       padding: $code-annotation-padding;
       color: #ccc;
-      border-top: 1px solid #000;
-      border-bottom: 1px solid #404040;
     }
   }
 }

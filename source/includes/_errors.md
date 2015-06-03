@@ -1,20 +1,32 @@
 # Errors
 
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files...just save them to the `includes` folder and add them to the top of your `index.md`'s frontmatter. Files are included in the order listed.</aside>
+> When `PUT`ing or `POST`ing - in case of a validation error, our API will describe each erroneous field. Here is an example:
 
-The Kittn API uses the following error codes:
+> `POST /users` with `{ "email": "incorrect@adress", "password": "areallylongpassword" }`
 
+```json
+{
+  "message": "Validation error: Validation isEmail failed,\nValidation error: Validation len failed",
+  "type": "ValidationError",
+  "errors": [
+    {
+      "field": "email",
+      "message": "Validation isEmail failed"
+    },
+    {
+      "field": "password",
+      "message": "Validation len failed"
+    }
+  ]
+}
 
-Error Code | Meaning
----------- | -------
-400 | Bad Request -- Your request sucks
-401 | Unauthorized -- Your API key is wrong
-403 | Forbidden -- The kitten requested is hidden for administrators only
-404 | Not Found -- The specified kitten could not be found
-405 | Method Not Allowed -- You tried to access a kitten with an invalid method
-406 | Not Acceptable -- You requested a format that isn't json
-410 | Gone -- The kitten requested has been removed from our servers
-418 | I'm a teapot
-429 | Too Many Requests -- You're requesting too many kittens! Slow down!
-500 | Internal Server Error -- We had a problem with our server. Try again later.
-503 | Service Unavailable -- We're temporarially offline for maintanance. Please try again later.
+```
+
+Code | Type | Description
+---- | ---- | -----------
+400 | `BadRequestError`           | Often missing a required parameter
+400 | `ValidationError`           | Some field is badly formatted or has validation errors
+404 | `EndpointNotFoundError`     | The requested url does not exist
+404 | `ResourceNotFoundError`     | The requested resource does not exist
+403 | `ForbiddenError`            | You cannot perform that action on the 
+50X | `ServerError`               | Oops - that's for us. 
