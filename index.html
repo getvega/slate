@@ -48,6 +48,10 @@
 
 <h2 id="basically">Basically</h2>
 
+<blockquote>
+<p><img title="Data Model" alt="Data Model" src="images/model.png" /></p>
+</blockquote>
+
 <ul>
 <li>You create <a href="#manage-your-users">users</a></li>
 <li>Users can create <a href="#manage-your-orders">orders</a>: an <em>Order</em> defines a batch of packages (<em>Shipments</em>) to be 1/ picked up at a predefined address, 2/ packed within our facilities and then 3/ shipped through our carrier partnerships</li>
@@ -55,6 +59,10 @@
 </ul>
 
 <h2 id="lifecycle-of-an-order">Lifecycle of an Order</h2>
+
+<blockquote>
+<p><img title="Order Lifecycle" alt="Order Lifecycle" src="images/lifecycle.png" /></p>
+</blockquote>
 
 <table><thead>
 <tr>
@@ -164,7 +172,7 @@ Your API credentials will consist of an <code class="prettyprint">applicationId<
 <h2 id="methods">Methods</h2>
 
 <blockquote>
-<p>Example of an User create HTTP request</p>
+<p>Creating a user</p>
 </blockquote>
 <pre class="highlight plaintext"><code>POST /users HTTP/1.1
 Authorization: Basic XXXXXXXXXXXXXXXXXXXXXX
@@ -260,7 +268,7 @@ Content-Type: application/json
 <tr>
 <td><code class="prettyprint">-- timeslot *</code></td>
 <td><code class="prettyprint">Enum&lt;string&gt;</code></td>
-<td>enum values: <code class="prettyprint">8-11</code>, <code class="prettyprint">11-14</code> or <code class="prettyprint">14-17</code></td>
+<td>enum values: <code class="prettyprint">08-11</code>, <code class="prettyprint">11-14</code> or <code class="prettyprint">14-17</code></td>
 </tr>
 <tr>
 <td><code class="prettyprint">-- messengerType *</code></td>
@@ -277,13 +285,13 @@ Content-Type: application/json
 <h2 id="methods">Methods</h2>
 
 <blockquote>
-<p>Example of an User create HTTP request</p>
+<p>Creating an order</p>
 </blockquote>
-<pre class="highlight plaintext"><code>POST /users HTTP/1.1
+<pre class="highlight plaintext"><code>POST /users/1/orders HTTP/1.1
 Authorization: Basic XXXXXXXXXXXXXXXXXXXXXX
 Content-Type: application/json
 
-{"firstName":"Pierre","lastName":"Dupont","email":"pierre@dupont.com"}
+{"pickingDetails":{"day":"06/28/15",timeslot:"11-14","messengerType":"2-wheeled"}}
 </code></pre>
 
 <table><thead>
