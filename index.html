@@ -29,72 +29,57 @@
         <ul class="search-results"></ul>
       <div id="toc">
       </div>
+        <ul class="toc-footer">
+            <li>beta version 0.0.1</li>
+        </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
         <h1 id="introduction">Introduction</h1>
 
-<p>Welcome to the Cubyn API! This API is organized around REST. All our API endpoints expect JSON and will issue responses formatted as JSON.</p>
+<p>Welcome to the Cubyn API! This API is organized around REST.</p>
 
-<h2 id="getting-started">Getting started</h2>
+<p>Ask your API credentials at <a href="api@cubyn.com">api@cubyn.com</a>, describing your needs. If you need help implementing the Cubyn API on your website, ask for help at <a href="api@cubyn.com">api@cubyn.com</a>!</p>
 
-<ul>
-<li>Ask your API credentials at api@cubyn.com, describing your needs</li>
-<li>Authenticate yourself via <a href="#authentication">HTTP Basic</a></li>
-<li>Manage your <a href="#manage-your-users">users</a></li>
-<li>Create your <a href="#manage-your-orders">orders</a></li>
-</ul>
+<p>Authentication is done via <a href="#authentication">HTTP Basic</a> using your credentials. All our endpoints speak JSON fluently.</p>
 
-<h2 id="basically">Basically</h2>
+<p><em>4 simple steps</em></p>
 
 <blockquote>
 <p><img title="Data Model" alt="Data Model" src="images/model.png" /></p>
 </blockquote>
 
-<ul>
-<li>You create <a href="#manage-your-users">users</a></li>
-<li>Users can create <a href="#manage-your-orders">orders</a>: an <em>Order</em> defines a batch of packages (<em>Shipments</em>) to be 1/ picked up at a predefined address, 2/ packed within our facilities and then 3/ shipped through our carrier partnerships</li>
-<li>A <em>Shipment</em> defines a package to be delivered to <em>one</em> address</li>
-</ul>
-
-<h2 id="lifecycle-of-an-order">Lifecycle of an Order</h2>
-
-<blockquote>
-<p><img title="Order Lifecycle" alt="Order Lifecycle" src="images/lifecycle.png" /></p>
-</blockquote>
-
 <table><thead>
 <tr>
-<th>State</th>
+<th>Step</th>
 <th>Description</th>
+<th>API METHOD</th>
 </tr>
 </thead><tbody>
 <tr>
-<td><code class="prettyprint">EDITING</code></td>
-<td>User just created an order but has not submitted it yet</td>
+<td>STEP 1</td>
+<td>Create a <a href="#manage-your-users">user</a></td>
+<td><code class="prettyprint">POST /users</code></td>
 </tr>
 <tr>
-<td><code class="prettyprint">SETTLED</code></td>
-<td>User has submitted it, but Cubyn has not processed the order yet</td>
+<td>STEP 2</td>
+<td>Create an <a href="#manage-your-orders">order</a></td>
+<td><code class="prettyprint">POST /users/:id/orders</code></td>
 </tr>
 <tr>
-<td><code class="prettyprint">PICKING</code></td>
-<td>Cubyn assigned a messenger to collect the shipments</td>
+<td>STEP 3</td>
+<td>Describe and add your <a href="#manage-your-parcels">parcels</a></td>
+<td><code class="prettyprint">POST /orders/:id/parcels</code></td>
 </tr>
 <tr>
-<td><code class="prettyprint">PACKING</code></td>
-<td>The messenger has picked the shipments and delivered to our logisticians</td>
-</tr>
-<tr>
-<td><code class="prettyprint">DELIVERING</code></td>
-<td>The shipments have been posted through the carrier</td>
-</tr>
-<tr>
-<td><code class="prettyprint">COMPLETE</code></td>
-<td>All shipments have arrived to destination</td>
+<td>STEP 4</td>
+<td>Finalize your order</td>
+<td><code class="prettyprint">POST /orders/:id/pick</code></td>
 </tr>
 </tbody></table>
+
+<p>Then Cubyn does the magic!</p>
 
           <h1 id="authentication">Authentication</h1>
 
@@ -104,6 +89,30 @@
 <pre class="highlight shell"><code>curl https://api.cubyn.com/v1 <span class="se">\</span>
     -u my-app:e336bfdbe671af94c4b9dfcb
 </code></pre>
+
+<blockquote>
+<p>REQUEST</p>
+</blockquote>
+<pre class="highlight plaintext"><code>POST / HTTP/1.1
+Authorization: Basic XXXXXXXXXXXXXXXXXXXXXX
+Content-Type: application/json
+</code></pre>
+
+<blockquote>
+<p>RESPONSE</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.0.1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cubyn-api"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Please visit developers.cubyn.com for further information on this API."</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"auth"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"application"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MyApplication"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"appId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"my-app"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 
 <p>All endpoints except <code class="prettyprint">GET /version</code> require a proper authentication. If you do not have your application credentials yet, please write your request at <a href="mailto:api@cubyn.com">api@cubyn.com</a>.
 Your API credentials will consist of an <code class="prettyprint">applicationId</code> and an <code class="prettyprint">applicationSecret</code>. Beware that these credentials carry many privileges - so keep them secret!</p>
@@ -132,42 +141,43 @@ Your API credentials will consist of an <code class="prettyprint">applicationId<
 <table><thead>
 <tr>
 <th>Field</th>
-<th>Required</th>
 <th>Type</th>
 <th>Details</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><code class="prettyprint">firstName</code></td>
-<td>NO</td>
 <td>string</td>
 <td></td>
 </tr>
 <tr>
 <td><code class="prettyprint">lastName</code></td>
-<td>NO</td>
 <td>string</td>
 <td></td>
 </tr>
 <tr>
-<td><code class="prettyprint">address</code></td>
-<td>YES</td>
+<td><code class="prettyprint">address *</code></td>
 <td>string</td>
-<td>address will be used to pickup the shipments</td>
+<td>address will be used to pickup the parcels</td>
 </tr>
 <tr>
-<td><code class="prettyprint">email</code></td>
-<td>YES</td>
+<td><code class="prettyprint">email *</code></td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td><code class="prettyprint">phone *</code></td>
 <td>string</td>
 <td></td>
 </tr>
 <tr>
 <td><code class="prettyprint">password</code></td>
-<td>NO</td>
 <td>string</td>
 <td>if you want the user to be able to log-in on cubyn.com</td>
 </tr>
 </tbody></table>
+
+<p><code class="prettyprint">*</code> = required</p>
 
 <h2 id="methods">Methods</h2>
 
@@ -191,7 +201,7 @@ Content-Type: application/json
 <tr>
 <td>GET</td>
 <td><code class="prettyprint">/users</code></td>
-<td>List all users owned by your application</td>
+<td>List all users owned by your application, list will not include <code class="prettyprint">orders</code> they&rsquo;ve made</td>
 </tr>
 <tr>
 <td>POST</td>
@@ -217,6 +227,40 @@ Content-Type: application/json
 
           <h1 id="manage-your-orders">Manage your orders</h1>
 
+<h2 id="lifecycle-of-an-order">Lifecycle of an Order</h2>
+
+<blockquote>
+<p><img title="Order Lifecycle" alt="Order Lifecycle" src="images/lifecycle.png" /></p>
+</blockquote>
+
+<table><thead>
+<tr>
+<th>State</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code class="prettyprint">DRAFT</code></td>
+<td>User has just created an order but has not submitted it yet</td>
+</tr>
+<tr>
+<td><code class="prettyprint">CONFIRMED</code></td>
+<td>User has submitted it, but Cubyn has not processed the order yet</td>
+</tr>
+<tr>
+<td><code class="prettyprint">PICKING</code></td>
+<td>Cubyn assigned a messenger to collect the parcels</td>
+</tr>
+<tr>
+<td><code class="prettyprint">PACKING</code></td>
+<td>The messenger has picked the parcels and delivered to our logisticians</td>
+</tr>
+<tr>
+<td><code class="prettyprint">SHIPPED</code></td>
+<td>The parcels have been posted through the carrier</td>
+</tr>
+</tbody></table>
+
 <h2 id="model">Model</h2>
 
 <blockquote>
@@ -234,13 +278,13 @@ Content-Type: application/json
   </span><span class="s2">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-03T17:30:31.000Z"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-03T17:30:31.000Z"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;User&gt;</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"shipments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">&lt;Shipment&gt;</span><span class="p">]</span><span class="w">
+  </span><span class="s2">"parcels"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">&lt;Parcel&gt;</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
 <table><thead>
 <tr>
-<th>Field (* = required)</th>
+<th>Field</th>
 <th>Type</th>
 <th>Details</th>
 </tr>
@@ -248,7 +292,7 @@ Content-Type: application/json
 <tr>
 <td><code class="prettyprint">status</code></td>
 <td><code class="prettyprint">Enum&lt;string&gt;</code></td>
-<td><em>(read-only)</em> <code class="prettyprint">EDITING › SETTLED › PICKING › PACKING › DELIVERING › COMPLETE</code></td>
+<td>See <a href="#lifecycle-of-an-order">Lifecycle of an Order</a> <em>read-only</em></td>
 </tr>
 <tr>
 <td><code class="prettyprint">pickingDetails *</code></td>
@@ -256,31 +300,33 @@ Content-Type: application/json
 <td></td>
 </tr>
 <tr>
-<td><code class="prettyprint">-- address</code></td>
+<td><code class="prettyprint">↳ address</code></td>
 <td><code class="prettyprint">string</code></td>
-<td>a geocodable address. If not defined, it will default to user&rsquo;s address</td>
+<td>a geocodable address <em>default: user&rsquo;s address</em></td>
 </tr>
 <tr>
-<td><code class="prettyprint">-- day *</code></td>
+<td><code class="prettyprint">↳ day *</code></td>
 <td><code class="prettyprint">string</code></td>
-<td><code class="prettyprint">day</code>/<code class="prettyprint">timeslot</code> has 1/ to be in the future, 2/ on a working day</td>
+<td><code class="prettyprint">day</code>/<code class="prettyprint">timeslot</code> has to be <em>in the future</em> <em>on a working day</em></td>
 </tr>
 <tr>
-<td><code class="prettyprint">-- timeslot *</code></td>
+<td><code class="prettyprint">↳ timeslot *</code></td>
 <td><code class="prettyprint">Enum&lt;string&gt;</code></td>
-<td>enum values: <code class="prettyprint">08-11</code>, <code class="prettyprint">11-14</code> or <code class="prettyprint">14-17</code></td>
+<td>A hour range to pickup the objects at the given address <em>allowed: <code class="prettyprint">08-11</code>, <code class="prettyprint">11-14</code> or <code class="prettyprint">14-17</code></em></td>
 </tr>
 <tr>
-<td><code class="prettyprint">-- messengerType *</code></td>
+<td><code class="prettyprint">↳ messengerType *</code></td>
 <td><code class="prettyprint">Enum&lt;string&gt;</code></td>
-<td>enum values: <code class="prettyprint">2-wheeled</code> or <code class="prettyprint">4-wheeled</code></td>
+<td>depends on the size / volume of the objects <em>allowed: <code class="prettyprint">2-wheeled</code> or <code class="prettyprint">4-wheeled</code></em></td>
 </tr>
 <tr>
-<td><code class="prettyprint">shipments</code></td>
-<td><code class="prettyprint">Array&lt;Shipment&gt;</code></td>
-<td>See <a href="#manage-your-shipments">Shipment Model</a></td>
+<td><code class="prettyprint">parcels</code></td>
+<td><code class="prettyprint">Array&lt;Parcel&gt;</code></td>
+<td>See <a href="#manage-your-parcels">Parcel Model</a></td>
 </tr>
 </tbody></table>
+
+<p><code class="prettyprint">*</code> = required</p>
 
 <h2 id="methods">Methods</h2>
 
@@ -309,17 +355,17 @@ Content-Type: application/json
 <tr>
 <td>GET</td>
 <td><code class="prettyprint">/orders/:id</code></td>
-<td>Read details of this order <em>Response will include <code class="prettyprint">user</code> and <code class="prettyprint">shipments</code> sub-documents</em></td>
+<td>Read details of this order <em>Response will include <code class="prettyprint">user</code> and <code class="prettyprint">parcels</code> sub-documents</em></td>
 </tr>
 <tr>
 <td>PUT</td>
 <td><code class="prettyprint">/orders/:id</code></td>
-<td>Update this order</td>
+<td>Update this order <em>will fail if not in the <code class="prettyprint">EDITING</code> phase</em></td>
 </tr>
 <tr>
 <td>DELETE</td>
 <td><code class="prettyprint">/orders/:id</code></td>
-<td>Delete this order</td>
+<td>Delete this order <em>will fail if not in the <code class="prettyprint">EDITING</code> phase</em></td>
 </tr>
 <tr>
 <td>GET</td>
@@ -334,16 +380,16 @@ Content-Type: application/json
 <tr>
 <td>POST</td>
 <td><code class="prettyprint">/orders/:id/pick</code></td>
-<td>Complete the editing phase - Cubyn will process the order!</td>
+<td>Complete the editing phase - Cubyn will process the order! <em>will fail if not in the <code class="prettyprint">EDITING</code> phase</em></td>
 </tr>
 </tbody></table>
 
-          <h1 id="manage-your-shipments">Manage your shipments</h1>
+          <h1 id="manage-your-parcels">Manage your parcels</h1>
 
 <h2 id="model">Model</h2>
 
 <blockquote>
-<p>Shipment example</p>
+<p>Parcel example</p>
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"iPhone 7"</span><span class="p">,</span><span class="w">
@@ -358,7 +404,7 @@ Content-Type: application/json
 
 <table><thead>
 <tr>
-<th>Field (* = required)</th>
+<th>Field</th>
 <th>Type</th>
 <th>Details</th>
 </tr>
@@ -366,7 +412,7 @@ Content-Type: application/json
 <tr>
 <td><code class="prettyprint">name</code></td>
 <td><code class="prettyprint">string</code></td>
-<td>a simple description of what&rsquo;s inside the shipment</td>
+<td>a simple description of what&rsquo;s inside the parcel</td>
 </tr>
 <tr>
 <td><code class="prettyprint">shippingDetails</code></td>
@@ -374,28 +420,35 @@ Content-Type: application/json
 <td></td>
 </tr>
 <tr>
-<td><code class="prettyprint">-- mode</code></td>
+<td><code class="prettyprint">↳ mode</code></td>
 <td><code class="prettyprint">Enum&lt;string&gt;</code></td>
-<td>enum values: <code class="prettyprint">eco</code> (within 48 hours) or <code class="prettyprint">express</code> (24h) <em>Default: <code class="prettyprint">eco</code></em></td>
+<td>shipping mode <em>allowed: <code class="prettyprint">eco</code> (within 48 hours) or <code class="prettyprint">express</code> (24h)</em> <em>Default: <code class="prettyprint">eco</code></em></td>
 </tr>
 <tr>
-<td><code class="prettyprint">-- address</code></td>
+<td><code class="prettyprint">↳ address</code></td>
 <td><code class="prettyprint">string</code></td>
 <td>a geocodable address. If not defined, it will default to user&rsquo;s address</td>
 </tr>
 <tr>
 <td><code class="prettyprint">reference</code></td>
 <td><code class="prettyprint">string</code></td>
-<td>a user reference he can use to track his shipments</td>
+<td>a user reference he can use to track his parcels</td>
+</tr>
+<tr>
+<td><code class="prettyprint">trackingId</code></td>
+<td><code class="prettyprint">string</code></td>
+<td>The tracking id delivered by the carrier <em>read-only</em></td>
 </tr>
 </tbody></table>
+
+<p><code class="prettyprint">*</code> = required</p>
 
 <h2 id="methods">Methods</h2>
 
 <blockquote>
-<p>Editing a shipment in a previously created order</p>
+<p>Editing a parcel in a previously created order</p>
 </blockquote>
-<pre class="highlight plaintext"><code>POST /orders/1/shipments/1 HTTP/1.1
+<pre class="highlight plaintext"><code>POST /orders/1/parcels/1 HTTP/1.1
 Authorization: Basic XXXXXXXXXXXXXXXXXXXXXX
 Content-Type: application/json
 
@@ -411,28 +464,28 @@ Content-Type: application/json
 </thead><tbody>
 <tr>
 <td>GET</td>
-<td><code class="prettyprint">/orders/:id/shipments</code></td>
-<td>List all the shipments of this order</td>
+<td><code class="prettyprint">/orders/:id/parcels</code></td>
+<td>List all the parcels of this order</td>
 </tr>
 <tr>
 <td>POST</td>
-<td><code class="prettyprint">/orders/:id/shipments</code></td>
-<td>Create a new Shipment within this order (will fail if order is already in <code class="prettyprint">SETTLED</code> state)</td>
+<td><code class="prettyprint">/orders/:id/parcels</code></td>
+<td>Create a new Parcel within this order  <em>will fail if not in the <code class="prettyprint">EDITING</code> phase</em></td>
 </tr>
 <tr>
 <td>GET</td>
-<td><code class="prettyprint">/orders/:id/shipments/:id</code></td>
-<td>Read details of this shipment <em>Response will include <code class="prettyprint">order</code> sub-document</em></td>
+<td><code class="prettyprint">/orders/:id/parcels/:id</code></td>
+<td>Read details of this parcel <em>Response will include <code class="prettyprint">order</code> sub-document</em></td>
 </tr>
 <tr>
 <td>PUT</td>
-<td><code class="prettyprint">/orders/:id/shipments/:id</code></td>
-<td>Edit a shipment</td>
+<td><code class="prettyprint">/orders/:id/parcels/:id</code></td>
+<td>Edit a parcel  <em>will fail if not in the <code class="prettyprint">EDITING</code> phase</em></td>
 </tr>
 <tr>
 <td>DELETE</td>
-<td><code class="prettyprint">/orders/:id/shipments/:id</code></td>
-<td>Delete a shipment</td>
+<td><code class="prettyprint">/orders/:id/parcels/:id</code></td>
+<td>Delete a parcel  <em>will fail if not in the <code class="prettyprint">EDITING</code> phase</em></td>
 </tr>
 </tbody></table>
 
@@ -441,7 +494,20 @@ Content-Type: application/json
 <blockquote>
 <p>When <code class="prettyprint">PUT</code>ing or <code class="prettyprint">POST</code>ing - in case of a validation error, our API will describe each erroneous field. Here is an example:</p>
 
-<p><code class="prettyprint">POST /users</code> with <code class="prettyprint">{ &quot;email&quot;: &quot;incorrect@adress&quot;, &quot;password&quot;: &quot;areallylongpassword&quot; }</code></p>
+<p>&nbsp;</p>
+
+<p>REQUEST</p>
+</blockquote>
+<pre class="highlight plaintext"><code>POST /users HTTP/1.1
+Authorization: Basic XXXXXXXXXXXXXXXXXXXXXX
+Content-Type: application/json
+
+{"email": "incorrect@adress", "password": "areallylongpassword"}
+
+</code></pre>
+
+<blockquote>
+<p>RESPONSE</p>
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Validation error: Validation isEmail failed,\nValidation error: Validation len failed"</span><span class="p">,</span><span class="w">
