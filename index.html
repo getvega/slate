@@ -130,7 +130,9 @@ Your API credentials will consist of an <code class="prettyprint">applicationId<
   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
   </span><span class="s2">"firstName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pierre"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"lastName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dupont"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"organizationName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Company SA"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"27 rue du Chemin Vert, 75011 Paris"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0666666666"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-03T17:30:31.000Z"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-03T17:30:31.000Z"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pierre@dupont.com"</span><span class="p">,</span><span class="w">
@@ -154,6 +156,11 @@ Your API credentials will consist of an <code class="prettyprint">applicationId<
 <td><code class="prettyprint">lastName</code></td>
 <td>string</td>
 <td></td>
+</tr>
+<tr>
+<td><code class="prettyprint">organizationName</code></td>
+<td>string</td>
+<td>Company / Association name _One of <code class="prettyprint">firstName</code>, <code class="prettyprint">lastName</code> and <code class="prettyprint">organizationName</code> has to be defined</td>
 </tr>
 <tr>
 <td><code class="prettyprint">address *</code></td>
@@ -268,13 +275,12 @@ Content-Type: application/json
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-03 accessories"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PICKING"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"pickingDetails"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"27 rue du Chemin Vert, 75011 Paris"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"day"</span><span class="p">:</span><span class="w"> </span><span class="s2">"27/09/2015"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"timeslot"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11-14"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"messengerType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2-wheeled"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"27 rue du Chemin Vert, 75011 Paris"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"day"</span><span class="p">:</span><span class="w"> </span><span class="s2">"27/09/2015"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"timeslot"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11-14"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"messengerType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2-wheeled"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-03T17:30:31.000Z"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-03T17:30:31.000Z"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;User&gt;</span><span class="p">,</span><span class="w">
@@ -295,34 +301,29 @@ Content-Type: application/json
 <td>See <a href="#lifecycle-of-an-order">Lifecycle of an Order</a> <em>read-only</em></td>
 </tr>
 <tr>
-<td><code class="prettyprint">pickingDetails *</code></td>
-<td><code class="prettyprint">mixed</code></td>
-<td></td>
+<td><code class="prettyprint">label</code></td>
+<td><code class="prettyprint">string</code></td>
+<td>Any short description user can add to label his command</td>
 </tr>
 <tr>
-<td><code class="prettyprint">↳ address</code></td>
+<td><code class="prettyprint">address</code></td>
 <td><code class="prettyprint">string</code></td>
 <td>a geocodable address <em>default: user&rsquo;s address</em></td>
 </tr>
 <tr>
-<td><code class="prettyprint">↳ day *</code></td>
+<td><code class="prettyprint">day</code></td>
 <td><code class="prettyprint">string</code></td>
 <td><code class="prettyprint">day</code>/<code class="prettyprint">timeslot</code> has to be <em>in the future</em> <em>on a working day</em></td>
 </tr>
 <tr>
-<td><code class="prettyprint">↳ timeslot *</code></td>
+<td><code class="prettyprint">timeslot *</code></td>
 <td><code class="prettyprint">Enum&lt;string&gt;</code></td>
 <td>A hour range to pickup the objects at the given address <em>allowed: <code class="prettyprint">08-11</code>, <code class="prettyprint">11-14</code> or <code class="prettyprint">14-17</code></em></td>
 </tr>
 <tr>
-<td><code class="prettyprint">↳ messengerType *</code></td>
+<td><code class="prettyprint">messengerType *</code></td>
 <td><code class="prettyprint">Enum&lt;string&gt;</code></td>
 <td>depends on the size / volume of the objects <em>allowed: <code class="prettyprint">2-wheeled</code> or <code class="prettyprint">4-wheeled</code></em></td>
-</tr>
-<tr>
-<td><code class="prettyprint">parcels</code></td>
-<td><code class="prettyprint">Array&lt;Parcel&gt;</code></td>
-<td>See <a href="#manage-your-parcels">Parcel Model</a></td>
 </tr>
 </tbody></table>
 
@@ -360,12 +361,12 @@ Content-Type: application/json
 <tr>
 <td>PUT</td>
 <td><code class="prettyprint">/orders/:id</code></td>
-<td>Update this order <em>will fail if not in the <code class="prettyprint">EDITING</code> phase</em></td>
+<td>Update this order <em>will fail if not in the <code class="prettyprint">DRAFT</code> phase</em></td>
 </tr>
 <tr>
 <td>DELETE</td>
 <td><code class="prettyprint">/orders/:id</code></td>
-<td>Delete this order <em>will fail if not in the <code class="prettyprint">EDITING</code> phase</em></td>
+<td>Delete this order <em>will fail if not in the <code class="prettyprint">DRAFT</code> phase</em></td>
 </tr>
 <tr>
 <td>GET</td>
@@ -380,7 +381,7 @@ Content-Type: application/json
 <tr>
 <td>POST</td>
 <td><code class="prettyprint">/orders/:id/pick</code></td>
-<td>Complete the editing phase - Cubyn will process the order! <em>will fail if not in the <code class="prettyprint">EDITING</code> phase</em></td>
+<td>Complete the order -› this informs Cubyn to process the order. <em>will fail if not in the <code class="prettyprint">DRAFT</code> phase</em></td>
 </tr>
 </tbody></table>
 
@@ -392,7 +393,7 @@ Content-Type: application/json
 <p>Parcel example</p>
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"iPhone 7"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"iPhone 7"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"shippingDetails"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"express"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3 place de la Republique, 69002 Lyon"</span><span class="w">
@@ -410,29 +411,49 @@ Content-Type: application/json
 </tr>
 </thead><tbody>
 <tr>
-<td><code class="prettyprint">name</code></td>
+<td><code class="prettyprint">label</code></td>
 <td><code class="prettyprint">string</code></td>
 <td>a simple description of what&rsquo;s inside the parcel</td>
 </tr>
 <tr>
-<td><code class="prettyprint">shippingDetails</code></td>
-<td><code class="prettyprint">mixed</code></td>
+<td><code class="prettyprint">firstName</code></td>
+<td>string</td>
 <td></td>
 </tr>
 <tr>
-<td><code class="prettyprint">↳ mode</code></td>
+<td><code class="prettyprint">lastName</code></td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td><code class="prettyprint">email</code></td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td><code class="prettyprint">organizationName</code></td>
+<td>string</td>
+<td>Company / Association name _One of <code class="prettyprint">firstName</code>, <code class="prettyprint">lastName</code> and <code class="prettyprint">organizationName</code> has to be defined</td>
+</tr>
+<tr>
+<td><code class="prettyprint">deliveryMode</code></td>
 <td><code class="prettyprint">Enum&lt;string&gt;</code></td>
 <td>shipping mode <em>allowed: <code class="prettyprint">eco</code> (within 48 hours) or <code class="prettyprint">express</code> (24h)</em> <em>Default: <code class="prettyprint">eco</code></em></td>
 </tr>
 <tr>
-<td><code class="prettyprint">↳ address</code></td>
+<td><code class="prettyprint">address *</code></td>
 <td><code class="prettyprint">string</code></td>
-<td>a geocodable address. If not defined, it will default to user&rsquo;s address</td>
+<td>defines the recipient address</td>
+</tr>
+<tr>
+<td><code class="prettyprint">phone</code></td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
 <td><code class="prettyprint">reference</code></td>
 <td><code class="prettyprint">string</code></td>
-<td>a user reference he can use to track his parcels</td>
+<td>user&rsquo;s own reference he can use to track his products with his workflows</td>
 </tr>
 <tr>
 <td><code class="prettyprint">trackingId</code></td>
@@ -470,7 +491,7 @@ Content-Type: application/json
 <tr>
 <td>POST</td>
 <td><code class="prettyprint">/orders/:id/parcels</code></td>
-<td>Create a new Parcel within this order  <em>will fail if not in the <code class="prettyprint">EDITING</code> phase</em></td>
+<td>Create a new Parcel within this order  <em>will fail if not in the <code class="prettyprint">DRAFT</code> phase</em></td>
 </tr>
 <tr>
 <td>GET</td>
@@ -480,12 +501,12 @@ Content-Type: application/json
 <tr>
 <td>PUT</td>
 <td><code class="prettyprint">/orders/:id/parcels/:id</code></td>
-<td>Edit a parcel  <em>will fail if not in the <code class="prettyprint">EDITING</code> phase</em></td>
+<td>Edit a parcel  <em>will fail if not in the <code class="prettyprint">DRAFT</code> phase</em></td>
 </tr>
 <tr>
 <td>DELETE</td>
 <td><code class="prettyprint">/orders/:id/parcels/:id</code></td>
-<td>Delete a parcel  <em>will fail if not in the <code class="prettyprint">EDITING</code> phase</em></td>
+<td>Delete a parcel  <em>will fail if not in the <code class="prettyprint">DRAFT</code> phase</em></td>
 </tr>
 </tbody></table>
 
